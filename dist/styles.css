@@ -4,3 +4,19 @@
 @media(max-width:390px){.panel-toggle{font-size:8.9vw}.scatter button,.scatter span{font-size:4.65vw}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.sign:after,.carousel img{transition:none}}
 .panel:not(.open) .panel-content{display:none!important}
+html,body{width:100%;max-width:100%;overflow-x:hidden}
+main,.hero,.accordion,.panel{max-width:100%}
+@media(max-width:700px){
+  main{width:100%;overflow:hidden}
+  .hero h1{font-size:16.8vw;line-height:1.1;letter-spacing:0;max-width:100%;overflow:visible}
+  .hero-meta{top:3.8vw;right:4vw}
+  .hero-contact{top:14.5vw;right:35vw}
+  .scatter{height:42vh;min-height:325px;max-height:375px}
+  .panel-toggle{font-size:8.6vw;line-height:1;padding:.68rem 0 .5rem;max-width:100%}
+  .case{width:100%;min-width:0;padding:1.25rem 1.2rem 1.9rem}
+  .carousel{width:100%;max-width:100%}
+  .carousel .prev{left:-.72rem}
+  .carousel .next{right:-.72rem}
+  .case-copy{max-width:100%}
+}
+@media(max-width:390px){.panel-toggle{font-size:8.35vw}}

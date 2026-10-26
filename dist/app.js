@@ -28,6 +28,10 @@ function move(carousel, direction) {
   image.src = slides[state.index];
 }
 
+window.inlineSlide = (button, direction) => {
+  move(button.closest('[data-carousel]'), direction);
+};
+
 document.querySelectorAll('[data-carousel]').forEach((carousel) => {
   const source = carousel.querySelector('.slides');
   if (!source) return;
@@ -36,8 +40,10 @@ document.querySelectorAll('[data-carousel]').forEach((carousel) => {
     preload.src = src;
   });
   states.set(carousel, { index: 0, startX: 0 });
-  carousel.querySelector('.prev').addEventListener('click', () => move(carousel, -1));
-  carousel.querySelector('.next').addEventListener('click', () => move(carousel, 1));
+  if (!carousel.querySelector('.prev').hasAttribute('onclick')) {
+    carousel.querySelector('.prev').addEventListener('click', () => move(carousel, -1));
+    carousel.querySelector('.next').addEventListener('click', () => move(carousel, 1));
+  }
   carousel.addEventListener('pointerdown', (event) => {
     const state = states.get(carousel);
     state.startX = event.clientX;
