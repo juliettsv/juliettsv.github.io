@@ -149,6 +149,72 @@
 
     document.querySelectorAll('a[href="#"]').forEach((link)=>link.addEventListener('click',(event)=>event.preventDefault()));
   </script>
-  <script src="portfolio-v3.js?build=4"></script>
+  <script>
+    (() => {
+      const states = new WeakMap();
+      const move = (carousel, direction) => {
+        const image = carousel.querySelector('img');
+        const source = carousel.querySelector('.slides');
+        if (!image || !source) return;
+        const slides = source.textContent.trim().split('|');
+        const state = states.get(carousel) || { index: 0, startX: 0 };
+        state.index = (state.index + direction + slides.length) % slides.length;
+        states.set(carousel, state);
+        image.src = slides[state.index];
+      };
+
+      document.querySelectorAll('.panel-toggle').forEach((button) => {
+        button.addEventListener('click', () => {
+          const panel = button.closest('.panel');
+          const open = panel.classList.toggle('open');
+          button.setAttribute('aria-expanded', String(open));
+        });
+      });
+
+      document.querySelectorAll('[data-open]').forEach((button) => {
+        button.addEventListener('click', () => {
+          const panel = document.getElementById(button.dataset.open);
+          panel.classList.add('open');
+          panel.querySelector('.panel-toggle').setAttribute('aria-expanded', 'true');
+          panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+      });
+
+      window.inlineSlide = (button, direction) => move(button.closest('[data-carousel]'), direction);
+      document.querySelectorAll('[data-carousel]').forEach((carousel) => {
+        states.set(carousel, { index: 0, startX: 0 });
+        carousel.querySelectorAll('.prev,.next').forEach((button) => {
+          button.removeAttribute('onclick');
+          button.addEventListener('click', (event) => {
+            event.preventDefault();
+            move(carousel, button.classList.contains('next') ? 1 : -1);
+          });
+        });
+        carousel.addEventListener('touchstart', (event) => {
+          const state = states.get(carousel);
+          state.startX = event.changedTouches[0].clientX;
+        }, { passive: true });
+        carousel.addEventListener('touchend', (event) => {
+          const distance = event.changedTouches[0].clientX - states.get(carousel).startX;
+          if (Math.abs(distance) > 42) move(carousel, distance < 0 ? 1 : -1);
+        }, { passive: true });
+      });
+
+      document.querySelectorAll('.video-carousel').forEach((carousel) => {
+        const video = carousel.querySelector('video');
+        const button = carousel.querySelector('.video-toggle');
+        video.play().catch(() => {});
+        button.addEventListener('click', () => {
+          if (video.paused) {
+            video.play();
+            button.textContent = 'Ⅱ';
+          } else {
+            video.pause();
+            button.textContent = '▶';
+          }
+        });
+      });
+    })();
+  </script>
 </body>
 </html>
