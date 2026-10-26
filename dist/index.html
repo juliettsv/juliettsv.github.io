@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Julia Savostina — art direction, mobile content, AI, photography and graphic design.">
   <title>Julia Savostina</title>
-  <link rel="stylesheet" href="styles.css?v=2">
+  <link rel="stylesheet" href="styles.css?v=5">
 </head>
 <body>
   <main>
     <section class="hero" aria-labelledby="site-title">
-      <h1 id="site-title">JULIA SAVOSTINA</h1>
+      <h1 id="site-title"><span>JULIA</span> <span>SAVOSTINA</span></h1>
       <div class="hero-grid">
         <nav class="scatter" aria-label="Portfolio sections">
           <button style="--x:0%;--y:0%" data-open="art-direction">art-direction</button>
@@ -161,6 +161,9 @@
         state.index = (state.index + direction + slides.length) % slides.length;
         states.set(carousel, state);
         image.src = slides[state.index];
+        const upcoming = new Image();
+        upcoming.decoding = 'async';
+        upcoming.src = slides[(state.index + direction + slides.length) % slides.length];
       };
 
       document.querySelectorAll('.panel-toggle').forEach((button) => {
@@ -183,6 +186,12 @@
       window.inlineSlide = (button, direction) => move(button.closest('[data-carousel]'), direction);
       document.querySelectorAll('[data-carousel]').forEach((carousel) => {
         states.set(carousel, { index: 0, startX: 0 });
+        const slideSources = carousel.querySelector('.slides').textContent.trim().split('|');
+        slideSources.slice(1, 2).forEach((src) => {
+          const preload = new Image();
+          preload.decoding = 'async';
+          preload.src = src;
+        });
         carousel.querySelectorAll('.prev,.next').forEach((button) => {
           button.removeAttribute('onclick');
           button.addEventListener('click', (event) => {
