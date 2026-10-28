@@ -52,14 +52,14 @@ main,.hero,.accordion,.panel{max-width:100%}
 
 /* Julia's measured desktop artboard: every vertical guide scales from its width. */
 @media(min-width:701px){
-  .hero{height:min(700px,66vh);min-height:560px;padding-top:1.65vw}
+  .hero{height:auto;min-height:0;padding-top:1.65vw}
   .hero h1{font-size:7.55vw;line-height:.9;letter-spacing:-.025em}
-  .hero-grid{grid-template-columns:1fr 1fr;grid-template-rows:auto auto;column-gap:1.15vw;row-gap:1.15vw;margin-top:2.7vw;min-height:0}
-  .scatter{height:clamp(270px,26.1vw,370px)}
+  .hero-grid{grid-template-columns:1fr 1fr;grid-template-rows:auto auto;column-gap:1.15vw;row-gap:.8vw;margin-top:2vw;min-height:0}
+  .scatter{height:clamp(260px,23vw,320px)}
   .scatter button,.scatter span{font-size:1.42vw}
-  .hero-photo{height:clamp(270px,26.1vw,370px)}
+  .hero-photo{height:clamp(260px,23vw,320px)}
   .hero-contact{margin-top:0;font-size:1.4vw}
-  .hero-meta{padding:0 0 clamp(12px,1.4vw,24px);font-size:1.4vw}
+  .hero-meta{margin-top:clamp(12px,1.5vh,20px);padding:0 0 clamp(12px,1.5vh,20px);font-size:1.4vw}
   .panel-toggle{font-size:6.15vw;padding:1.35vw 0 1.15vw;line-height:.96}
 }
 
@@ -71,10 +71,10 @@ main,.hero,.accordion,.panel{max-width:100%}
 .portrait-carousel{aspect-ratio:3/4;width:min(100%,42vw);justify-self:center;background:#fff}
 .portrait-carousel img{object-fit:contain}
 
-.video-modal{width:100vw;max-width:none;height:100dvh;max-height:none;margin:0;padding:clamp(1rem,3vw,3rem);border:0;background:rgba(0,0,0,.9)}
+.video-modal{width:100vw;max-width:none;height:100dvh;max-height:none;margin:0;padding:clamp(1rem,3vw,3rem);border:0;overflow:hidden;background:rgba(0,0,0,.9)}
 .video-modal::backdrop{background:rgba(0,0,0,.88)}
 .video-modal-shell{position:relative;width:100%;height:100%;display:grid;place-items:center}
-.video-modal video{display:block;max-width:calc(100% - 3rem);max-height:calc(100% - 3rem);width:auto;height:auto;background:#000;box-shadow:0 0 0 1px rgba(255,255,255,.13)}
+.video-modal video{display:block;max-width:min(82vw,1100px);max-height:min(70dvh,640px);width:auto;height:auto;background:#000;box-shadow:0 0 0 1px rgba(255,255,255,.13)}
 .video-modal-close{position:absolute;top:0;right:0;z-index:2;display:grid;place-items:center;width:2.5rem;height:2.5rem;border:1px solid rgba(255,255,255,.45);border-radius:50%;padding:0;color:#fff;background:rgba(0,0,0,.35);font-size:1.9rem;font-weight:300;line-height:1;text-decoration:none;cursor:pointer}
 .video-modal-close:hover,.video-modal-close:focus-visible{background:#fff;color:#111}
 
@@ -84,6 +84,6 @@ main,.hero,.accordion,.panel{max-width:100%}
   .video-hint{display:none}
   .portrait-carousel{width:100%;aspect-ratio:3/4}
   .video-modal{padding:2.7vw}
-  .video-modal video{max-width:100%;max-height:calc(100% - 4rem)}
+  .video-modal video{max-width:94vw;max-height:72dvh}
   .video-modal-close{top:.4rem;right:.4rem}
 }
