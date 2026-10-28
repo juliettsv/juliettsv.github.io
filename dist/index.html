@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Julia Savostina — art direction, mobile content, AI, photography and graphic design.">
   <title>Julia Savostina</title>
-  <link rel="stylesheet" href="styles.css?v=7">
+  <link rel="stylesheet" href="styles.css?v=9">
 </head>
 <body>
   <main>
@@ -57,7 +57,7 @@
       <article class="panel" id="ai">
         <button class="panel-toggle" aria-expanded="false"><span>AI</span><span class="sign" aria-hidden="true"></span></button>
         <div class="panel-content">
-          <div class="case"><div class="carousel video-carousel"><video src="assets/day-design.mov" muted loop playsinline autoplay preload="metadata" poster="assets/ai-bag.jpg"></video><button class="video-toggle" type="button" aria-label="Pause video">Ⅱ</button></div><div class="case-copy"><p>product commercial for DAY DESIGN</p><p>Halloween ai commercial using simple bag catalog shots</p><div class="case-foot"><a href="https://t.me/juliettsv" class="soft-link" target="_blank" rel="noreferrer">contact me</a></div></div></div>
+          <div class="case"><div class="carousel video-carousel" role="button" tabindex="0" aria-label="Open video with sound"><video src="assets/day-design.mov" muted loop playsinline autoplay preload="metadata" poster="assets/ai-bag.jpg"></video><button class="video-toggle is-playing" type="button" aria-label="Pause preview"><span aria-hidden="true"></span></button><span class="video-hint" aria-hidden="true">open video</span></div><div class="case-copy"><p>product commercial for DAY DESIGN</p><p>Halloween ai commercial using simple bag catalog shots</p><div class="case-foot"><a href="https://t.me/juliettsv" class="soft-link" target="_blank" rel="noreferrer">contact me</a></div></div></div>
           <div class="case"><div class="carousel" data-carousel><img src="assets/ai-beauty-1.jpg" alt="AI beauty catalog"><button class="prev" aria-label="Previous image" onclick="inlineSlide(this,-1)">&lt;</button><button class="next" aria-label="Next image" onclick="inlineSlide(this,1)">&gt;</button><div class="slides" hidden>assets/ai-beauty-1.jpg|assets/ai-beauty-2.jpg|assets/ai-beauty-3.jpg|assets/ai-beauty-4.jpg</div></div><div class="case-copy"><p>beauty catalog for RAD</p><p>Ai product shots and catalogs for brand<br>with appearance experimenting Gen Z audience</p><div class="case-foot"><a href="https://www.behance.net/juliettsv" class="soft-link" target="_blank" rel="noreferrer">*full case here</a><a href="https://t.me/juliettsv" class="soft-link" target="_blank" rel="noreferrer">contact me</a></div></div></div>
           <div class="case"><div class="carousel" data-carousel><img src="assets/ai-fashion-1.jpg" alt="AI fashion catalog"><button class="prev" aria-label="Previous image" onclick="inlineSlide(this,-1)">&lt;</button><button class="next" aria-label="Next image" onclick="inlineSlide(this,1)">&gt;</button><div class="slides" hidden>assets/ai-fashion-1.jpg|assets/ai-fashion-2.jpg|assets/ai-fashion-3.jpg</div></div><div class="case-copy"><p>fashion catalog for Madfrenzy</p><p>Ai models with photorealistic brand’s clothing<br>integration and fitting</p><div class="case-foot"><a href="https://t.me/juliettsv" class="soft-link" target="_blank" rel="noreferrer">contact me</a></div></div></div>
         </div>
@@ -82,6 +82,12 @@
     </section>
   </main>
   <footer><p>Юлия Савостина | Москва</p><p>*Instagram принадлежит компании Meta, признанной экстремистской и запрещённой на территории Российской Федерации.</p></footer>
+  <dialog class="video-modal" aria-label="DAY DESIGN video">
+    <div class="video-modal-shell">
+      <button class="video-modal-close" type="button" aria-label="Close video">close</button>
+      <video src="assets/day-design.mov" controls playsinline preload="metadata" poster="assets/ai-bag.jpg"></video>
+    </div>
+  </dialog>
   <script type="application/json" id="embedded-script-source">
     function inlineSlide(button,direction){
       const carousel=button.closest('[data-carousel]');
@@ -212,17 +218,55 @@
         }, { passive: true });
       });
 
+      const videoModal = document.querySelector('.video-modal');
+      const modalVideo = videoModal?.querySelector('video');
+      const closeVideoModal = () => {
+        if (!videoModal?.open) return;
+        modalVideo.pause();
+        videoModal.close();
+      };
+
+      videoModal?.querySelector('.video-modal-close')?.addEventListener('click', closeVideoModal);
+      videoModal?.addEventListener('click', (event) => {
+        if (event.target === videoModal) closeVideoModal();
+      });
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') closeVideoModal();
+      });
+
       document.querySelectorAll('.video-carousel').forEach((carousel) => {
         const video = carousel.querySelector('video');
         const button = carousel.querySelector('.video-toggle');
         video.play().catch(() => {});
-        button.addEventListener('click', () => {
+        const openVideo = () => {
+          if (!videoModal || !modalVideo) return;
+          video.pause();
+          button.classList.remove('is-playing');
+          button.setAttribute('aria-label', 'Play preview');
+          modalVideo.currentTime = video.currentTime || 0;
+          modalVideo.muted = false;
+          videoModal.showModal();
+          modalVideo.play().catch(() => {});
+        };
+        carousel.addEventListener('click', (event) => {
+          if (!event.target.closest('.video-toggle')) openVideo();
+        });
+        carousel.addEventListener('keydown', (event) => {
+          if ((event.key === 'Enter' || event.key === ' ') && event.target === carousel) {
+            event.preventDefault();
+            openVideo();
+          }
+        });
+        button.addEventListener('click', (event) => {
+          event.stopPropagation();
           if (video.paused) {
             video.play();
-            button.textContent = 'Ⅱ';
+            button.classList.add('is-playing');
+            button.setAttribute('aria-label', 'Pause preview');
           } else {
             video.pause();
-            button.textContent = '▶';
+            button.classList.remove('is-playing');
+            button.setAttribute('aria-label', 'Play preview');
           }
         });
       });

@@ -49,3 +49,42 @@ main,.hero,.accordion,.panel{max-width:100%}
   .hero h1{font-size:15vw}
   .panel-toggle{font-size:7.5vw}
 }
+
+/* Julia's measured desktop artboard: every vertical guide scales from its width. */
+@media(min-width:701px){
+  .hero{min-height:59.5vw;padding-top:1.65vw}
+  .hero h1{font-size:7.55vw;line-height:.9;letter-spacing:-.025em}
+  .hero-grid{grid-template-columns:1fr 1fr;grid-template-rows:auto auto;column-gap:1.15vw;row-gap:1.15vw;margin-top:2.7vw;min-height:0}
+  .scatter{height:27vw}
+  .scatter button,.scatter span{font-size:1.42vw}
+  .hero-photo{height:26.1vw}
+  .hero-contact{margin-top:0;font-size:1.4vw}
+  .hero-meta{padding:0 0 3.55vw;font-size:1.4vw}
+  .panel-toggle{font-size:6.15vw;padding:1.35vw 0 1.15vw;line-height:.96}
+}
+
+/* Quiet preview control; tapping the picture opens the full player. */
+.video-carousel{cursor:pointer}
+.video-carousel:focus-visible{outline:2px solid #111;outline-offset:3px}
+.video-carousel .video-toggle{display:grid;place-items:center;right:.55rem;bottom:.55rem;width:1.65rem;height:1.65rem;padding:0;border:1px solid rgba(255,255,255,.55);background:rgba(0,0,0,.48);opacity:.72}
+.video-toggle span{position:relative;display:block;width:.52rem;height:.62rem}
+.video-toggle span:before{content:"";position:absolute;inset:0;border-style:solid;border-width:.31rem 0 .31rem .52rem;border-color:transparent transparent transparent #fff}
+.video-toggle.is-playing span:before,.video-toggle.is-playing span:after{content:"";position:absolute;top:0;width:2px;height:.62rem;background:#fff;border:0}
+.video-toggle.is-playing span:before{left:.08rem}
+.video-toggle.is-playing span:after{right:.08rem}
+.video-hint{position:absolute;right:.55rem;bottom:2.55rem;padding:.12rem .28rem;color:#fff;background:rgba(0,0,0,.48);font-size:.72rem;line-height:1;opacity:0;transition:opacity .15s}
+.video-carousel:hover .video-hint,.video-carousel:focus-visible .video-hint{opacity:.75}
+
+.video-modal{width:100vw;max-width:none;height:100dvh;max-height:none;margin:0;padding:clamp(1rem,3vw,3rem);border:0;background:rgba(0,0,0,.88)}
+.video-modal::backdrop{background:rgba(0,0,0,.88)}
+.video-modal-shell{position:relative;width:100%;height:100%;display:grid;place-items:center}
+.video-modal video{display:block;max-width:100%;max-height:100%;width:auto;height:auto;background:#000}
+.video-modal-close{position:absolute;top:0;right:0;z-index:2;border:0;padding:.18rem .35rem;color:#111;background:#fff;text-decoration:underline;cursor:pointer}
+
+@media(max-width:700px){
+  .hero-meta{top:5.45vw}
+  .hero-contact{top:14.65vw;left:55%}
+  .video-hint{display:none}
+  .video-carousel .video-toggle{right:.45rem;bottom:.45rem;width:1.55rem;height:1.55rem}
+  .video-modal{padding:2.7vw}
+}
