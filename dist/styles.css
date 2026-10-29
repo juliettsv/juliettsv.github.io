@@ -52,7 +52,7 @@ main,.hero,.accordion,.panel{max-width:100%}
 
 /* Julia's measured desktop artboard: every vertical guide scales from its width. */
 @media(min-width:701px){
-  .hero{height:auto;min-height:0;padding-top:1.65vw}
+  .hero{height:auto;min-height:100vh;padding-top:1.65vw}
   .hero h1{font-size:7.55vw;line-height:.9;letter-spacing:-.025em}
   .hero-grid{grid-template-columns:1fr 1fr;grid-template-rows:auto auto;column-gap:1.15vw;row-gap:.8vw;margin-top:2vw;min-height:0}
   .scatter{height:clamp(260px,23vw,320px)}
