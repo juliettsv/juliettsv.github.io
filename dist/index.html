@@ -3,9 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Julia Savostina — art direction, mobile content, AI, photography and graphic design.">
+  <meta name="description" content="Портфолио креативного специалиста: арт-дирекшн, мобильный контент, AI, фотография и графический дизайн.">
+  <meta property="og:title" content="Julia Savostina">
+  <meta property="og:description" content="Портфолио креативного специалиста: арт-дирекшн, мобильный контент, AI, фотография и графический дизайн.">
   <title>Julia Savostina</title>
-  <link rel="stylesheet" href="styles.css?v=15">
+  <link rel="stylesheet" href="styles.css?v=16">
 </head>
 <body>
   <main>
@@ -57,8 +59,8 @@
       <article class="panel" id="ai">
         <button class="panel-toggle" aria-expanded="false"><span>AI</span><span class="sign" aria-hidden="true"></span></button>
         <div class="panel-content">
-          <div class="case"><div class="carousel video-carousel" role="button" tabindex="0" aria-label="Open video with sound"><video src="assets/day-design.mov" muted loop playsinline autoplay preload="auto" poster="assets/ai-bag.jpg"></video><span class="video-hint" aria-hidden="true">open with sound</span></div><div class="case-copy"><p>product commercial for DAY DESIGN</p><p>Halloween ai commercial using simple bag catalog shots</p><div class="case-foot"><a href="https://t.me/juliettsv" class="soft-link" target="_blank" rel="noreferrer">contact me</a></div></div></div>
-          <div class="case"><div class="carousel" data-carousel><img src="assets/ai-beauty-1.webp" alt="AI beauty catalog"><button class="prev" aria-label="Previous image" onclick="inlineSlide(this,-1)">&lt;</button><button class="next" aria-label="Next image" onclick="inlineSlide(this,1)">&gt;</button><div class="slides" hidden>assets/ai-beauty-1.webp|assets/ai-beauty-2.webp|assets/ai-beauty-3.webp|assets/ai-beauty-4.webp</div></div><div class="case-copy"><p>beauty catalog for RAD</p><p>Ai product shots and catalogs for brand<br>with appearance experimenting Gen Z audience</p><div class="case-foot"><a href="https://www.behance.net/juliettsv" class="soft-link" target="_blank" rel="noreferrer">*full case here</a><a href="https://t.me/juliettsv" class="soft-link" target="_blank" rel="noreferrer">contact me</a></div></div></div>
+          <div class="case"><div class="carousel video-carousel" role="button" tabindex="0" aria-label="Play or pause video"><video src="assets/day-design.mov" muted loop playsinline autoplay preload="auto" poster="assets/ai-bag.jpg"></video></div><div class="case-copy"><p>product commercial for DAY DESIGN</p><p>Halloween ai commercial using simple bag catalog shots</p><div class="case-foot"><a href="https://t.me/juliettsv" class="soft-link" target="_blank" rel="noreferrer">contact me</a></div></div></div>
+          <div class="case"><div class="carousel portrait-carousel" data-carousel><img src="assets/ai-beauty-1.webp" alt="AI beauty catalog"><button class="prev" aria-label="Previous image" onclick="inlineSlide(this,-1)">&lt;</button><button class="next" aria-label="Next image" onclick="inlineSlide(this,1)">&gt;</button><div class="slides" hidden>assets/ai-beauty-1.webp|assets/ai-beauty-2.webp|assets/ai-beauty-3.webp|assets/ai-beauty-4.webp</div></div><div class="case-copy"><p>beauty catalog for RAD</p><p>Ai product shots and catalogs for brand<br>with appearance experimenting Gen Z audience</p><div class="case-foot"><a href="https://www.behance.net/juliettsv" class="soft-link" target="_blank" rel="noreferrer">*full case here</a><a href="https://t.me/juliettsv" class="soft-link" target="_blank" rel="noreferrer">contact me</a></div></div></div>
           <div class="case"><div class="carousel portrait-carousel" data-carousel><img src="assets/ai-fashion-1.jpg" alt="AI fashion catalog"><button class="prev" aria-label="Previous image" onclick="inlineSlide(this,-1)">&lt;</button><button class="next" aria-label="Next image" onclick="inlineSlide(this,1)">&gt;</button><div class="slides" hidden>assets/ai-fashion-1.jpg|assets/ai-fashion-2.jpg|assets/ai-fashion-3.jpg</div></div><div class="case-copy"><p>fashion catalog for Madfrenzy</p><p>Ai models with photorealistic brand’s clothing<br>integration and fitting</p><div class="case-foot"><a href="https://t.me/juliettsv" class="soft-link" target="_blank" rel="noreferrer">contact me</a></div></div></div>
         </div>
       </article>
@@ -82,12 +84,6 @@
     </section>
   </main>
   <footer><p>Юлия Савостина | Москва</p><p>*Instagram принадлежит компании Meta, признанной экстремистской и запрещённой на территории Российской Федерации.</p></footer>
-  <dialog class="video-modal" aria-label="DAY DESIGN video">
-    <div class="video-modal-shell">
-      <button class="video-modal-close" type="button" aria-label="Close video">×</button>
-      <video src="assets/day-design.mov" controls playsinline preload="auto" poster="assets/ai-bag.jpg"></video>
-    </div>
-  </dialog>
   <script type="application/json" id="embedded-script-source">
     function inlineSlide(button,direction){
       const carousel=button.closest('[data-carousel]');
@@ -218,31 +214,6 @@
         }, { passive: true });
       });
 
-      const videoModal = document.querySelector('.video-modal');
-      const modalVideo = videoModal?.querySelector('video');
-      const previewVideo = document.querySelector('.video-carousel video');
-      const closeVideoModal = () => {
-        if (!videoModal?.open) return;
-        modalVideo.pause();
-        videoModal.close();
-        if (previewVideo) {
-          previewVideo.muted = true;
-          previewVideo.play().catch(() => {});
-        }
-      };
-
-      videoModal?.querySelector('.video-modal-close')?.addEventListener('click', closeVideoModal);
-      videoModal?.addEventListener('click', (event) => {
-        if (!event.target.closest('video') && !event.target.closest('.video-modal-close')) closeVideoModal();
-      });
-      videoModal?.addEventListener('cancel', (event) => {
-        event.preventDefault();
-        closeVideoModal();
-      });
-      document.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape') closeVideoModal();
-      });
-
       document.querySelectorAll('.video-carousel').forEach((carousel) => {
         const video = carousel.querySelector('video');
         const startPreview = () => {
@@ -251,19 +222,12 @@
         };
         startPreview();
         video.addEventListener('canplay', startPreview, { once: true });
-        const openVideo = () => {
-          if (!videoModal || !modalVideo) return;
-          video.pause();
-          modalVideo.currentTime = video.currentTime || 0;
-          modalVideo.muted = false;
-          videoModal.showModal();
-          modalVideo.play().catch(() => {});
-        };
-        carousel.addEventListener('click', openVideo);
+        const toggleVideo = () => video.paused ? video.play().catch(() => {}) : video.pause();
+        carousel.addEventListener('click', toggleVideo);
         carousel.addEventListener('keydown', (event) => {
           if ((event.key === 'Enter' || event.key === ' ') && event.target === carousel) {
             event.preventDefault();
-            openVideo();
+            toggleVideo();
           }
         });
       });

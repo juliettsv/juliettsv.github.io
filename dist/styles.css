@@ -25,10 +25,11 @@ main,.hero,.accordion,.panel{max-width:100%}
 @media(max-width:700px){
   :root{--pad:2.7vw}
   .hero{display:block;padding-top:3.5vw}
-  .hero h1{font-size:15vw;line-height:1.08;font-weight:600;letter-spacing:-.025em;white-space:nowrap}
+  .hero h1{font-size:16.5vw;line-height:1.08;font-weight:600;letter-spacing:-.025em;white-space:nowrap}
   .hero h1 span{display:block}
   .hero-grid{display:flex;margin-top:1.5vw}
-  .hero-photo{order:1;width:100%;height:52.5vw}
+  .hero-photo{order:1;width:100%;height:auto;aspect-ratio:1400/788}
+  .hero-photo img{object-fit:contain}
   .scatter{order:2;height:61vw;min-height:0;max-height:none;margin-top:2.4vw}
   .scatter button,.scatter span{font-size:4.15vw;line-height:1}
   .hero-meta{top:4.1vw;right:2.9vw;font-size:2.5vw;line-height:1.05}
@@ -46,7 +47,7 @@ main,.hero,.accordion,.panel{max-width:100%}
 }
 
 @media(max-width:390px){
-  .hero h1{font-size:15vw}
+  .hero h1{font-size:16.5vw}
   .panel-toggle{font-size:7.5vw}
 }
 
@@ -66,24 +67,15 @@ main,.hero,.accordion,.panel{max-width:100%}
 /* Quiet preview control; tapping the picture opens the full player. */
 .video-carousel{cursor:pointer}
 .video-carousel:focus-visible{outline:2px solid #111;outline-offset:3px}
-.video-hint{position:absolute;right:.55rem;bottom:.55rem;padding:.18rem .32rem;color:#fff;background:rgba(0,0,0,.48);font-size:.72rem;line-height:1;opacity:.6;transition:opacity .15s}
-.video-carousel:hover .video-hint,.video-carousel:focus-visible .video-hint{opacity:.75}
 .portrait-carousel{aspect-ratio:3/4;width:min(100%,42vw);justify-self:center;background:#fff}
 .portrait-carousel img{object-fit:contain}
 
-.video-modal{width:100vw;max-width:none;height:100dvh;max-height:none;margin:0;padding:clamp(1rem,3vw,3rem);border:0;overflow:hidden;background:rgba(0,0,0,.9)}
-.video-modal::backdrop{background:rgba(0,0,0,.88)}
-.video-modal-shell{position:relative;width:100%;height:100%;display:grid;place-items:center}
-.video-modal video{display:block;max-width:min(82vw,1100px);max-height:min(70dvh,640px);width:auto;height:auto;background:#000;box-shadow:0 0 0 1px rgba(255,255,255,.13)}
-.video-modal-close{position:absolute;top:0;right:0;z-index:2;display:grid;place-items:center;width:2.5rem;height:2.5rem;border:1px solid rgba(255,255,255,.45);border-radius:50%;padding:0;color:#fff;background:rgba(0,0,0,.35);font-size:1.9rem;font-weight:300;line-height:1;text-decoration:none;cursor:pointer}
-.video-modal-close:hover,.video-modal-close:focus-visible{background:#fff;color:#111}
-
 @media(max-width:700px){
-  .hero-meta{top:5.45vw}
-  .hero-contact{top:14.65vw;left:55%}
-  .video-hint{display:none}
+  .hero-meta{top:5.45vw;right:6vw}
+  .hero-contact{top:14.65vw;left:52%}
   .portrait-carousel{width:100%;aspect-ratio:3/4}
-  .video-modal{padding:2.7vw}
-  .video-modal video{max-width:94vw;max-height:72dvh}
-  .video-modal-close{top:.4rem;right:.4rem}
 }
+
+.video-carousel{aspect-ratio:3/4;width:min(100%,42vw);justify-self:center;background:#fff}
+.video-carousel video{object-fit:contain}
+@media(max-width:700px){.video-carousel{width:100%;aspect-ratio:3/4}}
