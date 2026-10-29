@@ -59,7 +59,7 @@ main,.hero,.accordion,.panel{max-width:100%}
   .scatter button,.scatter span{font-size:1.42vw}
   .hero-photo{height:clamp(260px,23vw,320px)}
   .hero-contact{margin-top:0;font-size:1.4vw}
-  .hero-meta{margin-top:clamp(12px,1.5vh,20px);padding:0 0 clamp(12px,1.5vh,20px);font-size:1.4vw}
+  .hero-meta{margin-top:auto;padding:0 0 clamp(12px,1.5vh,20px);font-size:1.4vw}
   .panel-toggle{font-size:6.15vw;padding:1.35vw 0 1.15vw;line-height:.96}
 }
 
