@@ -7,7 +7,7 @@
   <meta property="og:title" content="Julia Savostina">
   <meta property="og:description" content="Creative specialist portfolio featuring art direction, mobile content, AI, photography and graphic design.">
   <title>Julia Savostina</title>
-  <link rel="stylesheet" href="styles.css?v=18">
+  <link rel="stylesheet" href="styles.css?v=19">
 </head>
 <body>
   <main>
@@ -156,6 +156,27 @@
   <script>
     (() => {
       const states = new WeakMap();
+      const loadedImages = new Map();
+      const loadImage = (src) => {
+        if (loadedImages.has(src)) return loadedImages.get(src);
+        const pending = new Promise((resolve, reject) => {
+          const preload = new Image();
+          preload.decoding = 'async';
+          preload.onload = () => {
+            const decoded = preload.decode ? preload.decode().catch(() => {}) : Promise.resolve();
+            decoded.then(() => resolve(preload));
+          };
+          preload.onerror = () => { loadedImages.delete(src); reject(new Error('Image unavailable: ' + src)); };
+          preload.src = src;
+        });
+        loadedImages.set(src, pending);
+        return pending;
+      };
+      const preloadPanel = (panel) => {
+        panel.querySelectorAll('[data-carousel] .slides').forEach((source) => {
+          source.textContent.trim().split('|').forEach((src) => loadImage(src).catch(() => {}));
+        });
+      };
       const move = (carousel, direction) => {
         const image = carousel.querySelector('img');
         const source = carousel.querySelector('.slides');
@@ -164,10 +185,16 @@
         const state = states.get(carousel) || { index: 0, startX: 0 };
         state.index = (state.index + direction + slides.length) % slides.length;
         states.set(carousel, state);
-        image.src = slides[state.index];
-        const upcoming = new Image();
-        upcoming.decoding = 'async';
-        upcoming.src = slides[(state.index + direction + slides.length) % slides.length];
+        const requestedIndex = state.index;
+        loadImage(slides[requestedIndex]).then(() => {
+          if (state.index !== requestedIndex) return;
+          image.src = slides[requestedIndex];
+          image.alt = state.alt + ' — image ' + (requestedIndex + 1) + ' of ' + slides.length;
+          carousel.dataset.slideIndex = String(requestedIndex);
+        }).catch(() => {
+          state.index = Number(carousel.dataset.slideIndex || 0);
+        });
+        loadImage(slides[(requestedIndex + direction + slides.length) % slides.length]).catch(() => {});
       };
 
       document.querySelectorAll('.panel-toggle').forEach((button) => {
@@ -175,6 +202,7 @@
           const panel = button.closest('.panel');
           const open = panel.classList.toggle('open');
           button.setAttribute('aria-expanded', String(open));
+          if (open) preloadPanel(panel);
         });
       });
 
@@ -183,19 +211,19 @@
           const panel = document.getElementById(button.dataset.open);
           panel.classList.add('open');
           panel.querySelector('.panel-toggle').setAttribute('aria-expanded', 'true');
+          preloadPanel(panel);
           panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
         });
       });
 
       window.inlineSlide = (button, direction) => move(button.closest('[data-carousel]'), direction);
       document.querySelectorAll('[data-carousel]').forEach((carousel) => {
-        states.set(carousel, { index: 0, startX: 0 });
+        const image = carousel.querySelector('img');
+        states.set(carousel, { index: 0, startX: 0, alt: image.alt });
+        carousel.dataset.slideIndex = '0';
         const slideSources = carousel.querySelector('.slides').textContent.trim().split('|');
-        slideSources.slice(1, 2).forEach((src) => {
-          const preload = new Image();
-          preload.decoding = 'async';
-          preload.src = src;
-        });
+        image.alt += ' — image 1 of ' + slideSources.length;
+        loadImage(slideSources[0]).catch(() => {});
         carousel.querySelectorAll('.prev,.next').forEach((button) => {
           button.removeAttribute('onclick');
           button.addEventListener('click', (event) => {
