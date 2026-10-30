@@ -79,3 +79,18 @@ main,.hero,.accordion,.panel{max-width:100%}
 .video-carousel{aspect-ratio:3/4;width:min(100%,42vw);justify-self:center;background:#fff}
 .video-carousel video{object-fit:contain}
 @media(max-width:700px){.video-carousel{width:100%;aspect-ratio:3/4}}
+
+/* Julia's October review: case typography and alignment. */
+.contact-link{color:#090909}
+.shoot-title{line-height:1.35}
+footer{color:#737373}
+@media(min-width:701px){
+  :root{--line:2px solid #111}
+  .sign:before,.sign:after{height:2px}
+  #mobile-content .case-copy{align-self:stretch;display:flex;flex-direction:column;justify-content:space-between;padding:2vw 0}
+}
+@media(max-width:700px){
+  .case-copy{text-align:left}
+  .case-foot{justify-content:flex-start}
+  .scatter [data-open="mobile-content"]{left:auto!important;right:0}
+}
