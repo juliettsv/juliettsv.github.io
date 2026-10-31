@@ -87,9 +87,14 @@ footer{color:#737373}
 @media(min-width:701px){
   :root{--line:2px solid #111}
   .sign:before,.sign:after{height:2px}
-  #mobile-content .case-copy{align-self:stretch;display:flex;flex-direction:column;justify-content:space-between;padding:2vw 0}
+  .case-copy{align-self:center;display:grid;grid-template-rows:2.4em minmax(2.4em,auto) auto;row-gap:1.8em;line-height:1.2}
+  .case-copy>p{margin:0;grid-row:1;align-self:end}
+  .case-copy>.case-description{grid-row:2;align-self:center;width:100%;max-width:46ch;margin-left:auto}
+  .case-copy>.case-foot{grid-row:3}
+  .case-copy>.shoot-title{line-height:1.2}
 }
 @media(max-width:700px){
+  .desktop-break{display:none}
   .case-copy{text-align:left}
   .case-foot{justify-content:flex-start}
   .scatter [data-open="mobile-content"]{left:auto!important;right:0}
