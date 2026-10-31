@@ -7,7 +7,7 @@
   <meta property="og:title" content="Julia Savostina">
   <meta property="og:description" content="Creative specialist portfolio featuring art direction, mobile content, AI, photography and graphic design.">
   <title>Julia Savostina</title>
-  <link rel="stylesheet" href="styles.css?v=20">
+  <link rel="stylesheet" href="styles.css?v=21">
 </head>
 <body>
   <main>
@@ -59,7 +59,7 @@
       <article class="panel" id="ai">
         <button class="panel-toggle" aria-expanded="false"><span>AI</span><span class="sign" aria-hidden="true"></span></button>
         <div class="panel-content">
-          <div class="case"><div class="carousel video-carousel" role="button" tabindex="0" aria-label="Play or pause video"><video src="assets/day-design.mov" muted loop playsinline autoplay preload="auto" poster="assets/ai-bag.jpg"></video></div><div class="case-copy"><p>product commercial for <a href="https://www.instagram.com/daydesign.official?xtok=b3UwMmQ1b205bjh3" class="" target="_blank" rel="noreferrer">DAY DESIGN</a></p><p class="case-description">Halloween themed ai commercial for <br class="desktop-break">leather shopper bag with a red lining</p><div class="case-foot"><a href="https://t.me/juliettsv" class="soft-link contact-link" target="_blank" rel="noreferrer">contact me</a></div></div></div>
+          <div class="case"><div class="carousel video-carousel" role="button" tabindex="0" aria-label="Play or pause video"><video data-src="assets/day-design-web.mp4" muted loop playsinline preload="none" poster="assets/ai-bag.jpg"></video></div><div class="case-copy"><p>product commercial for <a href="https://www.instagram.com/daydesign.official?xtok=b3UwMmQ1b205bjh3" class="" target="_blank" rel="noreferrer">DAY DESIGN</a></p><p class="case-description">Halloween themed ai commercial for <br class="desktop-break">leather shopper bag with a red lining</p><div class="case-foot"><a href="https://t.me/juliettsv" class="soft-link contact-link" target="_blank" rel="noreferrer">contact me</a></div></div></div>
           <div class="case"><div class="carousel portrait-carousel" data-carousel><img src="assets/ai-beauty-1.webp" alt="AI beauty catalog"><button class="prev" aria-label="Previous image" onclick="inlineSlide(this,-1)">&lt;</button><button class="next" aria-label="Next image" onclick="inlineSlide(this,1)">&gt;</button><div class="slides" hidden>assets/ai-beauty-1.webp|assets/ai-beauty-2.webp|assets/ai-beauty-3.webp|assets/ai-beauty-4.webp</div></div><div class="case-copy"><p>beauty catalog for <a href="https://www.instagram.com/rad_not_bad?dlrf=MTFkMjJqaDh4NGw4Mg==" class="" target="_blank" rel="noreferrer">RAD</a></p><p class="case-description">Ai product shots and catalogs for brand<br>with appearance experimenting Gen Z audience</p><div class="case-foot"><a href="https://www.instagram.com/rad_not_bad?dlrf=MTFkMjJqaDh4NGw4Mg==" class="soft-link" target="_blank" rel="noreferrer">*full case here</a><a href="https://t.me/juliettsv" class="soft-link contact-link" target="_blank" rel="noreferrer">contact me</a></div></div></div>
         </div>
       </article>
@@ -174,7 +174,12 @@
       };
       const preloadPanel = (panel) => {
         panel.querySelectorAll('[data-carousel] .slides').forEach((source) => {
-          source.textContent.trim().split('|').forEach((src) => loadImage(src).catch(() => {}));
+          const slides = source.textContent.trim().split('|');
+          const carousel = source.closest('[data-carousel]');
+          const index = states.get(carousel)?.index || 0;
+          loadImage(slides[index]).then(() => {
+            loadImage(slides[(index + 1) % slides.length]).catch(() => {});
+          }).catch(() => {});
         });
       };
       const move = (carousel, direction) => {
@@ -191,10 +196,10 @@
           image.src = slides[requestedIndex];
           image.alt = state.alt + ' — image ' + (requestedIndex + 1) + ' of ' + slides.length;
           carousel.dataset.slideIndex = String(requestedIndex);
+          loadImage(slides[(requestedIndex + direction + slides.length) % slides.length]).catch(() => {});
         }).catch(() => {
-          state.index = Number(carousel.dataset.slideIndex || 0);
+          if (state.index === requestedIndex) state.index = Number(carousel.dataset.slideIndex || 0);
         });
-        loadImage(slides[(requestedIndex + direction + slides.length) % slides.length]).catch(() => {});
       };
 
       document.querySelectorAll('.panel-toggle').forEach((button) => {
@@ -203,6 +208,7 @@
           const open = panel.classList.toggle('open');
           button.setAttribute('aria-expanded', String(open));
           if (open) preloadPanel(panel);
+          syncVideo(panel, open);
         });
       });
 
@@ -212,6 +218,7 @@
           panel.classList.add('open');
           panel.querySelector('.panel-toggle').setAttribute('aria-expanded', 'true');
           preloadPanel(panel);
+          syncVideo(panel, true);
           panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
         });
       });
@@ -241,30 +248,28 @@
         }, { passive: true });
       });
 
+      const syncVideo = (panel, open) => {
+        const video = panel.querySelector('video');
+        if (!video) return;
+        if (!open) { video.pause(); return; }
+        if (!video.getAttribute('src')) {
+          video.src = video.dataset.src;
+          video.load();
+        }
+        video.muted = true;
+        video.play().catch(() => {});
+      };
       document.querySelectorAll('.video-carousel').forEach((carousel) => {
         const video = carousel.querySelector('video');
-        const startPreview = () => {
-          video.muted = true;
-          video.play().catch(() => {});
+        const toggleVideo = () => {
+          if (video.paused || video.readyState < 2) syncVideo(carousel.closest('.panel'), true);
+          else video.pause();
         };
-        startPreview();
-        video.addEventListener('canplay', startPreview, { once: true });
-        const toggleVideo = () => video.paused ? video.play().catch(() => {}) : video.pause();
         carousel.addEventListener('click', toggleVideo);
         carousel.addEventListener('keydown', (event) => {
           if ((event.key === 'Enter' || event.key === ' ') && event.target === carousel) {
             event.preventDefault();
             toggleVideo();
-          }
-        });
-      });
-
-      document.querySelectorAll('#ai .panel-toggle').forEach((toggle) => {
-        toggle.addEventListener('click', () => {
-          const preview = toggle.closest('.panel').querySelector('.video-carousel video');
-          if (toggle.getAttribute('aria-expanded') === 'true') {
-            preview.muted = true;
-            preview.play().catch(() => {});
           }
         });
       });
